@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+
+    forge-data:
+        build:
+            context: ./context
+        restart: always
+        environment:
+            POSTGRES_PASSWORD_FILE: /run/secrets/forge-data-psql-postgres
+        ports:
+            - target: 5432
+              published: 55432
+              protocol: tcp
+        secrets:
+            - forge-data-psql-postgres
+            - forge-data-psql-conductor
+            - forge-data-psql-drone
+            - forge-data-psql-monitor
+        volumes:
+            - type: volume
+              source: forge-data-psql
+              target: /var/lib/postgresql/data
+
+secrets:
+    forge-data-psql-postgres:
+        file: /etc/forge/data/psql/postgres
+    forge-data-psql-conductor:
+        file: /etc/forge/data/psql/conductor
+    forge-data-psql-drone:
+        file: /etc/forge/data/psql/drone
+    forge-data-psql-monitor:
+        file: /etc/forge/data/psql/monitor
+
+volumes:
+    forge-data-psql:
+
