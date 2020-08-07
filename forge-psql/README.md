@@ -10,12 +10,18 @@ required content for the forge-keeper project.
 
 ## How to Deploy
 
-### Create the password files
-
-These are stored in /etc/forge/data/psql/<username> and are locked down to only
-the root user.
-
 ### docker-compose
+
+**NOTE:** The stack definition targets deployment via swarm. To use docker-
+compose, you will need to update the secrets in the `.yml` to use the file-
+based secrets instead of the external/named secrets.
+
+#### Create Password Files
+
+These are stored in `/etc/forge/data/psql/<username>` and are locked down to
+only the root user.
+
+#### Build/Start the Service
 
 In this directory, run as `root`:
 
@@ -25,7 +31,27 @@ docker-compose -f stack.yml up
 
 ### Docker Swarm
 
-TBD!!!
+#### Create Password Secrets
+
+- Run `docker secret create forge-data-psql-<username> -`
+- Type in the password.
+- Press `Enter` and `CTRL+D`.
+
+#### Build the Image
+
+Go to the `context` directory and run this as root:
+
+```
+docker build -t forge-data .
+```
+
+#### Deploy the Service
+
+In this directory, run as `root`:
+
+```
+docker stack deploy -c stack.yml forge-data
+```
 
 ## Connecting
 

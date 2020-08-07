@@ -3,6 +3,7 @@ version: '3.7'
 services:
 
     forge-data:
+        image: forge-data
         build:
             context: ./context
         restart: always
@@ -24,13 +25,21 @@ services:
 
 secrets:
     forge-data-psql-postgres:
-        file: /etc/forge/data/psql/postgres
+        external: true
+        name: forge-data-psql-postgres
+        #file: /etc/forge/data/psql/postgres
     forge-data-psql-conductor:
-        file: /etc/forge/data/psql/conductor
+        external: true
+        name: forge-data-psql-conductor
+        #file: /etc/forge/data/psql/conductor
     forge-data-psql-drone:
-        file: /etc/forge/data/psql/drone
+        external: true
+        name: forge-data-psql-drone
+        #file: /etc/forge/data/psql/drone
     forge-data-psql-monitor:
-        file: /etc/forge/data/psql/monitor
+        external: true
+        name: forge-data-psql-monitor
+        #file: /etc/forge/data/psql/monitor
 
 volumes:
     forge-data-psql:
