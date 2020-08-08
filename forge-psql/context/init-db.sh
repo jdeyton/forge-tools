@@ -4,8 +4,6 @@ function get_secret {
     /usr/bin/head -1 "/run/secrets/psql-$1"
 }
 
-export PGHOST="$(get_secret host)"
-export PGPORT="$(get_secret port)"
 export PGUSER="$(get_secret postgres-user)"
 export PGPASSWORD="$(get_secret postgres-pass)"
 
