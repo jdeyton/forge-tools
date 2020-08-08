@@ -31,10 +31,19 @@ docker-compose -f stack.yml up
 
 ### Docker Swarm
 
-#### Create Password Secrets
+#### Create Secrets
 
-- Run `docker secret create forge-data-psql-<username> -`
-- Type in the password.
+You need to ensure the following details are captured as docker secrets:
+* **host:** database hostname
+* **port:** database port
+* **name:** database name
+* **postgres-user** and **postgres-password**
+* **conductor-user** and **conductor-password**
+* **drone-user** and **drone-password**
+* **monitor-user** and **monitor-password**
+
+- Run `docker secret create forge-keeper-psql-<secret> -`
+- Type in the secret.
 - Press `Enter` and `CTRL+D`.
 
 #### Build the Image
@@ -42,7 +51,7 @@ docker-compose -f stack.yml up
 Go to the `context` directory and run this as root:
 
 ```
-docker build -t forge-data .
+docker build -t forge-keeper-db .
 ```
 
 #### Deploy the Service
@@ -50,11 +59,11 @@ docker build -t forge-data .
 In this directory, run as `root`:
 
 ```
-docker stack deploy -c stack.yml forge-data
+docker stack deploy -c stack.yml forge-keeper-db
 ```
 
 ## Connecting
 
 ```
-psql -h localhost -p 55432 -U <user> -d forge_data
+psql -h <host> -p <port> -U <user> -d <db>
 ```

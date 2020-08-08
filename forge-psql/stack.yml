@@ -2,45 +2,70 @@ version: '3.7'
 
 services:
 
-    forge-data:
-        image: forge-data
+    database:
+        image: forge-keeper-db
         build:
             context: ./context
         restart: always
         environment:
-            POSTGRES_PASSWORD_FILE: /run/secrets/forge-data-psql-postgres
+            POSTGRES_USER_FILE: /run/secrets/psql-postgres-user
+            POSTGRES_PASSWORD_FILE: /run/secrets/psql-postgres-pass
         ports:
             - target: 5432
               published: 55432
               protocol: tcp
         secrets:
-            - forge-data-psql-postgres
-            - forge-data-psql-conductor
-            - forge-data-psql-drone
-            - forge-data-psql-monitor
+            - psql-host
+            - psql-port
+            - psql-name
+            - psql-conductor-user
+            - psql-conductor-pass
+            - psql-drone-user
+            - psql-drone-pass
+            - psql-monitor-user
+            - psql-monitor-pass
+            - psql-postgres-user
+            - psql-postgres-pass
         volumes:
             - type: volume
-              source: forge-data-psql
+              source: forge-keeper-psql
               target: /var/lib/postgresql/data
 
 secrets:
-    forge-data-psql-postgres:
+    psql-host:
         external: true
-        name: forge-data-psql-postgres
-        #file: /etc/forge/data/psql/postgres
-    forge-data-psql-conductor:
+        name: forge-keeper-psql-host
+    psql-port:
         external: true
-        name: forge-data-psql-conductor
-        #file: /etc/forge/data/psql/conductor
-    forge-data-psql-drone:
+        name: forge-keeper-psql-port
+    psql-name:
         external: true
-        name: forge-data-psql-drone
-        #file: /etc/forge/data/psql/drone
-    forge-data-psql-monitor:
+        name: forge-keeper-psql-name
+    psql-conductor-user:
         external: true
-        name: forge-data-psql-monitor
-        #file: /etc/forge/data/psql/monitor
+        name: forge-keeper-psql-conductor-user
+    psql-conductor-pass:
+        external: true
+        name: forge-keeper-psql-conductor-pass
+    psql-drone-user:
+        external: true
+        name: forge-keeper-psql-drone-user
+    psql-drone-pass:
+        external: true
+        name: forge-keeper-psql-drone-pass
+    psql-monitor-user:
+        external: true
+        name: forge-keeper-psql-monitor-user
+    psql-monitor-pass:
+        external: true
+        name: forge-keeper-psql-monitor-pass
+    psql-postgres-user:
+        external: true
+        name: forge-keeper-psql-postgres-user
+    psql-postgres-pass:
+        external: true
+        name: forge-keeper-psql-postgres-pass
 
 volumes:
-    forge-data-psql:
+    forge-keeper-psql:
 
