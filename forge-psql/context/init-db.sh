@@ -50,6 +50,7 @@ CREATE TABLE event (
 );
 ALTER TABLE event OWNER TO $conductor;
 GRANT INSERT ON event TO $drone;
+GRANT SELECT ON archive, event, drone TO $monitor;
 
 EOF
 
